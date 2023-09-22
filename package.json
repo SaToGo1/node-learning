@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "description": "",
   "workspaces": [
-    "01.Intro"
+    "01.Intro",
+    "02.API_express"
   ],
   "main": "index.js",
   "scripts": {
