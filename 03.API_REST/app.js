@@ -1,7 +1,10 @@
 const express = require('express')
+const crypto = require('node:crypto')
 const movies = require('./movies.json')
+const { validateMovie } = require('./schemas/movies')
 
 const app = express()
+app.use(express.json())
 app.disable('x-powered-by')
 
 app.get('/', (req, res) => {
@@ -27,6 +30,24 @@ app.get('/movies/:id', (req, res) => { // path-to-regexp
   if (movie) return res.json(movie)
 
   res.status(404).json({ message: 'Movie not found' })
+})
+
+app.post('/movies', (req, res) => {
+  const result = validateMovie(req.body)
+
+  if (result.error) {
+    return res.status(400).json({ error: result.error.message })
+  }
+
+  const newMovie = {
+    id: crypto.randomUUID(), // uuid v4
+    ...result.data
+  }
+  // Esto no sería, porque estamos guardando
+  // el estado de la aplicación en memoria
+  movies.push(newMovie)
+
+  res.status(201).json(newMovie) // actualizar la caché del cliente
 })
 
 const PORT = process.env.PORT ?? 3000
