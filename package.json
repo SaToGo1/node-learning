@@ -5,7 +5,8 @@
   "description": "",
   "workspaces": [
     "01.Intro",
-    "02.API_express"
+    "02.API_express",
+    "03.API_REST"
   ],
   "main": "index.js",
   "scripts": {

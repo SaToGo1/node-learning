@@ -1,7 +1,7 @@
 const express = require('express')
 const crypto = require('node:crypto')
 const movies = require('./movies.json')
-const { validateMovie } = require('./schemas/movies')
+const { validateMovies } = require('./schemas/movies')
 
 const app = express()
 app.use(express.json())
@@ -33,12 +33,13 @@ app.get('/movies/:id', (req, res) => { // path-to-regexp
 })
 
 app.post('/movies', (req, res) => {
-  const result = validateMovie(req.body)
+  const result = validateMovies(req.body)
 
-  if (result.error) {
-    return res.status(400).json({ error: result.error.message })
+  if (!result.success) {
+    return res.status(400).json({ error: JSON.parse(result.error.message) })
   }
 
+  console.log('3')
   const newMovie = {
     id: crypto.randomUUID(), // uuid v4
     ...result.data

@@ -8,14 +8,14 @@ const movieSchema = z.object({
   year: z.number().int().min(1900).max(2024),
   director: z.string(),
   duration: z.number().int().positive(),
-  rate: z.number().min(0).max(10),
+  rate: z.number().min(0).max(10).default(0),
   poster: z.string().url(), // podrias hacer .endswith('.jpg')
   genre: z.array(
-    z.enum(['Action', 'Adventure', 'Comedy', 'Drama', 'Fantasy', 'Horror', 'Thriller', 'Sci-Fi'])
+    z.enum(['Action', 'Adventure', 'Crime', 'Comedy', 'Drama', 'Fantasy', 'Horror', 'Thriller', 'Sci-Fi'])
   )
 })
 
-function validateMovies(object) {
+function validateMovies (object) {
   return movieSchema.safeParse(object)
 }
 
