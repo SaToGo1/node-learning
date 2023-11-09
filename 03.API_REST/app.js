@@ -11,8 +11,19 @@ app.get('/', (req, res) => {
   res.json({ message: 'Hola Mundo' })
 })
 
+const ACCEPTED_ORIGINS = [
+  'http://localhost:8080',
+  'http://localhost:1234',
+  'https://movies.com'
+]
+
 // Todos los recursos que sean MOVIES se identifican con /movies
 app.get('/movies', (req, res) => {
+  const origin = req.header('origin')
+  if (ACCEPTED_ORIGINS.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin)
+  }
+
   const { genre } = req.query
   if (genre) {
     const filteredMovies = movies.filter(
